@@ -1,6 +1,6 @@
 package day3
 
-import common.loadLines
+import common.util.loadLines
 
 fun day3() {
     val banks = loadLines("input/day3.txt").map { it.map { it.digitToInt() } }

@@ -1,6 +1,6 @@
 package day2
 
-import common.loadLines
+import common.util.loadLines
 import kotlin.math.min
 
 fun day2() {

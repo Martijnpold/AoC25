@@ -1,6 +1,6 @@
 package day1
 
-import common.loadLines
+import common.util.loadLines
 import kotlin.math.abs
 
 fun day1() {
