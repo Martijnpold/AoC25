@@ -1,45 +1,31 @@
 package day3
 
 import common.loadLines
-import kotlin.math.min
 
-fun day2() {
-    val ranges: List<Pair<Long, Long>> = loadLines("input/day2.txt")
-        .flatMap { it.split(",").toList() }
-        .map { range ->
-            range.split("-").let { (start, end) -> start.toLong() to end.toLong() }
-        }
+fun day3() {
+    val banks = loadLines("input/day3.txt").map { it.map { it.digitToInt() } }
 
     var sumTwo = 0L
-    var sumMoreThanTwo = 0L
-    ranges.forEach { (start, end) ->
-        sumTwo += calculateSum(start, end, 2, 2)
-        sumMoreThanTwo += calculateSum(start, end, 2, 999)
+    var sumTwelve = 0L
+
+    banks.forEach { bank ->
+        val valueTwo = calculateBank(bank, 0, 2)
+        sumTwo += valueTwo
+        val valueTwelve = calculateBank(bank, 0, 12)
+        sumTwelve += valueTwelve
+        println(valueTwelve)
     }
+
     println(sumTwo)
-    println(sumMoreThanTwo)
+    println(sumTwelve)
 }
 
-fun Long.digits() = toString().length
+fun calculateBank(bank: List<Int>, start: Int, digits: Int): Long {
+    val subBank = bank.subList(start, bank.size - (digits - 1))
+    val biggest = subBank.sortedDescending()[0]
+    if (digits == 1) return biggest.toLong()
 
-fun calculateSum(start: Long, end: Long, minSplits: Int, maxSplits: Int): Long {
-    var sum = 0L
-
-    LongRange(start, end).forEach {
-        run splitloop@{
-            IntRange(minSplits, min(maxSplits, end.digits())).forEach { splits ->
-                val digits = it.digits()
-                if (digits % splits != 0) return@forEach
-
-                val section = it.toString().substring(0, digits / splits)
-                val compare = section.repeat(splits).toLong()
-                if (it == compare) {
-                    sum += compare
-                    return@splitloop
-                }
-            }
-        }
-    }
-
-    return sum
+    val biggestIndex = subBank.indexOf(biggest)
+    val next = calculateBank(bank, start + biggestIndex + 1, digits - 1)
+    return "$biggest$next".toLong()
 }
