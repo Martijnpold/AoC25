@@ -5,24 +5,17 @@ import common.loadLines
 fun day3() {
     val banks = loadLines("input/day3.txt").map { it.map { it.digitToInt() } }
 
-    var sumTwo = 0L
-    var sumTwelve = 0L
+    println("2: ${solveBanks(banks, 2)}")
+    println("12: ${solveBanks(banks, 12)}")
+}
 
-    banks.forEach { bank ->
-        val valueTwo = calculateBank(bank, 0, 2)
-        sumTwo += valueTwo
-        val valueTwelve = calculateBank(bank, 0, 12)
-        sumTwelve += valueTwelve
-        println(valueTwelve)
-    }
-
-    println(sumTwo)
-    println(sumTwelve)
+fun solveBanks(banks: List<List<Int>>, digits: Int): Long {
+    return banks.sumOf { calculateBank(it, 0, digits) }
 }
 
 fun calculateBank(bank: List<Int>, start: Int, digits: Int): Long {
     val subBank = bank.subList(start, bank.size - (digits - 1))
-    val biggest = subBank.sortedDescending()[0]
+    val biggest = subBank.max()
     if (digits == 1) return biggest.toLong()
 
     val biggestIndex = subBank.indexOf(biggest)

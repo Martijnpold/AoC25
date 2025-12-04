@@ -1,5 +1,9 @@
 import day3.day3
+import kotlin.time.measureTime
 
 fun main() {
-    day3()
+    val timeSpent = measureTime {
+        day3()
+    }
+    println("time spent: $timeSpent")
 }

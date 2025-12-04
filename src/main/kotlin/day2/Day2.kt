@@ -4,30 +4,22 @@ import common.loadLines
 import kotlin.math.min
 
 fun day2() {
-    val ranges: List<Pair<Long, Long>> = loadLines("input/day2.txt")
+    val ranges: List<LongRange> = loadLines("input/day2.txt")
         .flatMap { it.split(",").toList() }
         .map { range ->
-            range.split("-").let { (start, end) -> start.toLong() to end.toLong() }
+            range.split("-").let { (start, end) -> LongRange(start.toLong(), end.toLong()) }
         }
 
-    var sumTwo = 0L
-    var sumMoreThanTwo = 0L
-    ranges.forEach { (start, end) ->
-        sumTwo += calculateSum(start, end, 2, 2)
-        sumMoreThanTwo += calculateSum(start, end, 2, 999)
-    }
-    println(sumTwo)
-    println(sumMoreThanTwo)
+    println("2: ${ranges.sumOf { calculateSum(it, 2, 2) }}")
+    println("> 2: ${ranges.sumOf { calculateSum(it, 2, 999) }}")
 }
 
-fun Long.digits() = toString().length
-
-fun calculateSum(start: Long, end: Long, minSplits: Int, maxSplits: Int): Long {
+fun calculateSum(range: LongRange, minSplits: Int, maxSplits: Int): Long {
     var sum = 0L
 
-    LongRange(start, end).forEach {
+    range.forEach {
         run splitloop@{
-            IntRange(minSplits, min(maxSplits, end.digits())).forEach { splits ->
+            IntRange(minSplits, min(maxSplits, range.last.digits())).forEach { splits ->
                 val digits = it.digits()
                 if (digits % splits != 0) return@forEach
                 val section = it.toString().substring(0, digits / splits)
@@ -42,3 +34,5 @@ fun calculateSum(start: Long, end: Long, minSplits: Int, maxSplits: Int): Long {
 
     return sum
 }
+
+fun Long.digits() = toString().length
