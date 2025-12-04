@@ -20,5 +20,5 @@ fun calculateBank(bank: List<Int>, start: Int, digits: Int): Long {
 
     val biggestIndex = subBank.indexOf(biggest)
     val next = calculateBank(bank, start + biggestIndex + 1, digits - 1)
-    return "$biggest$next".toLong()
+    return biggest * 10 + next
 }
