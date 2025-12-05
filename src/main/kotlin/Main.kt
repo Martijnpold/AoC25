@@ -2,7 +2,7 @@ import kotlin.time.measureTime
 
 fun main() {
     val timeSpent = measureTime {
-        day4.day4()
+        day5.day5()
     }
     println("time spent: $timeSpent")
 }
